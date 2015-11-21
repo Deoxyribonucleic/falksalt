@@ -1,0 +1,35 @@
+import os
+
+env = Environment(CCFLAGS = '-std=c++11 -g -Wall -Werror',
+        CPPDEFINES=['__GXX_EXPERIMENTAL_CXX0X__', 'GLEW_STATIC'],
+        CPPPATH = ['.', '../depend/openmassive/src'],
+        LIBPATH = ['../depend/openmassive/build'])
+
+# Load environment variables
+env.Replace(**os.environ)
+
+# Source section
+sources = Split("""
+Main.cpp
+game/Game.cpp
+""")
+
+# Object section
+objects = env.Object(source = sources)
+
+# Target section
+binary = env.Program(
+        target = 'falksalt',
+        source = objects,
+        LIBS = ['sfml-system', 'sfml-window',
+            'sfml-graphics',
+            'om-util'])
+
+all_targets = [binary]
+
+
+# Aliases
+env.Alias('all', all_targets)
+
+Default(all_targets)
+

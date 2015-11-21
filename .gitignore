@@ -1,0 +1,9 @@
+build/
+.sconsign.dblite
+doxygen/
+.project
+.cproject
+.clang_complete
+*.swp
+*.pyc
+.ycm_extra_conf.py

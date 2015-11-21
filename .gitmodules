@@ -1,0 +1,3 @@
+[submodule "depend/openmassive"]
+	path = depend/openmassive
+	url = https://github.com/Deoxyribonucleic/openmassive
