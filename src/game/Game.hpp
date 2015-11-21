@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Uncopiable.hpp"
+#include "StateStack.hpp"
 
 #include <om/util/log/Logger.hpp>
 
@@ -20,6 +21,8 @@ namespace falksalt
 
 	private:
 		om::Logger& m_logger;
+		StateStack m_stateStack;
+		
 		bool m_stop;
 
 		void update();

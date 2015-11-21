@@ -1,9 +1,12 @@
 #include "Game.hpp"
 
+#include "GameState.hpp"
+
 #include <SFML/Window.hpp>
 
 #include <thread>
 #include <chrono>
+#include <memory>
 
 using namespace falksalt;
 
@@ -12,6 +15,8 @@ Game::Game(int*, char**)
 	: m_logger(om::Logger::get("Game"))
 {
 	m_logger << "Initialized." << std::endl;
+
+	m_stateStack.push(std::make_shared<GameState>());
 }
 
 Game::~Game()
@@ -33,7 +38,7 @@ void Game::start()
 		//		m_renderer.resize(event.size.width, event.size.height);
 		//}
 
-		update();
+		m_stateStack.update();
 
 		//m_renderer.render(m_pyramid);
 		//m_renderer.render(m_camera, m_shader);
