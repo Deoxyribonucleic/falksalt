@@ -29,21 +29,19 @@ void Game::start()
 	m_stop = false;
 	while(!m_stop)
 	{
-		//sf::Event event;
-		//while(m_renderer.get_window().pollEvent(event))
-		//{
-		//	if(event.type == sf::Event::Closed)
-		//		stop();
-		//	else if(event.type == sf::Event::Resized)
-		//		m_renderer.resize(event.size.width, event.size.height);
-		//}
+		sf::Event event;
+		while(m_renderer.getWindow().pollEvent(event))
+		{
+			if(event.type == sf::Event::Closed)
+				stop();
+			//else if(event.type == sf::Event::Resized)
+			//	m_renderer.resize(event.size.width, event.size.height);
+		}
 
 		m_stateStack.update();
 
-		//m_renderer.render(m_pyramid);
-		//m_renderer.render(m_camera, m_shader);
-
-		//std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		m_renderer.beginRender();
+		m_renderer.finishRender();
 	}
 	m_logger << "Game loop stopped." << std::endl;
 }

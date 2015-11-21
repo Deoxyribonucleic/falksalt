@@ -2,6 +2,7 @@
 
 #include "Uncopiable.hpp"
 #include "StateStack.hpp"
+#include "graphics/Renderer.hpp"
 
 #include <om/util/log/Logger.hpp>
 
@@ -21,6 +22,7 @@ namespace falksalt
 
 	private:
 		om::Logger& m_logger;
+		Renderer m_renderer;
 		StateStack m_stateStack;
 		
 		bool m_stop;
