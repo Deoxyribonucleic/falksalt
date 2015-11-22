@@ -45,6 +45,9 @@ void Renderer::render(Pad const& pad)
 
 void Renderer::render(Block const& block)
 {
+	if(block.isDestroyed())
+		return;
+
 	sf::RectangleShape rect(sf::Vector2f(
 				unitsToPixelsX(Block::Width),
 				unitsToPixelsY(Block::Height)));

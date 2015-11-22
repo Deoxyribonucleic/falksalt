@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Collision.hpp"
+
 #include <SFML/Graphics.hpp>
 
 namespace falksalt
@@ -20,11 +22,18 @@ namespace falksalt
 		float getX() const;
 		int getLayer() const;
 		
+		bool isDestroyed() const;
+		int destroy();
+		int getScore() const;
+		
+		Collision collides(glm::vec2 start, glm::vec2 end);
+		
 	private:
 		float layerToY(int layer) const;
 	
 		int m_layer;
 		float m_x;
+		bool m_isDestroyed;
 	};
 }
 

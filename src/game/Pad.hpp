@@ -23,7 +23,7 @@ namespace falksalt
 
 		void update(float delta);
 
-		Collision collides(glm::vec2 start, glm::vec2 end, glm::vec2& where) const;
+		Collision collides(glm::vec2 start, glm::vec2 end) const;
 		
 	private:
 		float m_position;

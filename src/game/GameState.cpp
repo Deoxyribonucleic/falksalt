@@ -18,11 +18,6 @@ GameState::GameState()
 			m_blocks[l][b] = Block(l, b * Block::Width - 1.0f);
 		}
 	}
-
-	glm::vec2 where(2, 2);
-	bool intersect = intersects(glm::vec2(-1, -1), glm::vec2(1, 1),
-			glm::vec2(1, -1), glm::vec2(0, 1), where);
-	std::cout << where.x << "," << where.y << ": " << intersect << std::endl;
 }
 
 void GameState::update(float delta, bool)
@@ -32,7 +27,7 @@ void GameState::update(float delta, bool)
 	m_pad.setVelocity(m_padController.getInputVelocity());
 	m_pad.update(delta);
 
-	m_ball.update(delta, m_pad);
+	m_ball.update(delta, m_pad, m_blocks);
 }
 
 void GameState::render(Renderer& renderer)

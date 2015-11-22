@@ -17,17 +17,24 @@ namespace falksalt
 
 		Ball(float x, float y);
 
-		void update(float delta, Pad const& pad);
+		void update(float delta, Pad const& pad,
+				std::array<std::array<Block, Block::LayerWidth>,
+					Block::Layers>& blocks);
 
 		glm::vec2 getPosition() const;
 
 	private:
-
 		float getSpeed() const;
 
-		void move(float delta, Pad const& pad);
+		void move(float delta, Pad const& pad,
+			std::array<std::array<Block, Block::LayerWidth>, Block::Layers>& blocks);
+		Collision collide(glm::vec2 const& movement,
+				Pad const& pad,
+				std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
+					blocks);
 
 		glm::vec2 m_position, m_velocity;
+		int frame;
 	};
 }
 
