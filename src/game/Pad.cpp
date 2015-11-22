@@ -27,3 +27,16 @@ void Pad::update(float delta)
 		m_position = -1.0;
 }
 
+Collision Pad::collides(glm::vec2 start, glm::vec2 end, glm::vec2& where) const
+{
+	if(intersects(start, end,
+				glm::vec2(
+					m_position - Pad::Width / 2.f, 0+Pad::VerticalPosition),
+				glm::vec2(
+					m_position + Pad::Width / 2.f, 0+Pad::VerticalPosition),
+				where))
+		return Collision::Up;
+	else
+		return Collision::None;
+}
+

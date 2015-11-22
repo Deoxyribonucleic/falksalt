@@ -1,6 +1,6 @@
 import os
 
-env = Environment(CCFLAGS = '-std=c++11 -g -Wall -Werror',
+env = Environment(CCFLAGS = '-std=c++11 -g -Wall -O2 -Werror',
         CPPDEFINES=['__GXX_EXPERIMENTAL_CXX0X__', 'GLEW_STATIC'],
         CPPPATH = ['.', '../depend/openmassive/src'],
         LIBPATH = ['../depend/openmassive/build'])
@@ -13,6 +13,7 @@ sources = Split("""
 Main.cpp
 game/Ball.cpp
 game/Block.cpp
+game/Collision.cpp
 game/Game.cpp
 game/GameState.cpp
 game/Pad.cpp

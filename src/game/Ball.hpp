@@ -6,6 +6,7 @@
 
 namespace falksalt
 {
+	class Pad;
 	class Ball final
 	{
 	public:
@@ -16,12 +17,15 @@ namespace falksalt
 
 		Ball(float x, float y);
 
-		void update(float delta);
+		void update(float delta, Pad const& pad);
 
 		glm::vec2 getPosition() const;
 
 	private:
+
 		float getSpeed() const;
+
+		void move(float delta, Pad const& pad);
 
 		glm::vec2 m_position, m_velocity;
 	};

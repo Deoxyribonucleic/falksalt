@@ -49,7 +49,7 @@ void Game::start()
 		m_stateStack.render(m_renderer);
 		m_renderer.finishRender();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 	m_logger << "Game loop stopped." << std::endl;
 }

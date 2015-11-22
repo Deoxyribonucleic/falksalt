@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Block.hpp"
+#include "Collision.hpp"
+
+#include <glm/glm.hpp>
 
 
 namespace falksalt
@@ -19,6 +22,8 @@ namespace falksalt
 		void setVelocity(float vel);
 
 		void update(float delta);
+
+		Collision collides(glm::vec2 start, glm::vec2 end, glm::vec2& where) const;
 		
 	private:
 		float m_position;
