@@ -67,10 +67,10 @@ void Game::update()
 float Game::getAndUpdateDelta()
 {
 	auto now = std::chrono::system_clock::now();
-	auto delta = std::chrono::duration_cast<std::chrono::milliseconds>
+	auto delta = std::chrono::duration_cast<std::chrono::microseconds>
 		(now - m_lastTick);
 
 	m_lastTick = now;
-	return delta.count() / 1000.f;
+	return delta.count() / 1000000.f;
 }
 
