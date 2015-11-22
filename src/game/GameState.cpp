@@ -7,7 +7,8 @@
 using namespace falksalt;
 
 GameState::GameState()
-	: m_logger(om::Logger::get("GameState"))
+	: m_logger(om::Logger::get("GameState")),
+	  m_ball(0, 0)
 {
 	for(int l = 0; l < Block::Layers; ++l)
 	{
@@ -24,6 +25,8 @@ void GameState::update(float delta, bool)
 
 	m_pad.setVelocity(m_padController.getInputVelocity());
 	m_pad.update(delta);
+
+	m_ball.update(delta);
 }
 
 void GameState::render(Renderer& renderer)
@@ -36,5 +39,6 @@ void GameState::render(Renderer& renderer)
 			renderer.render(m_blocks[l][b]);
 		}
 	}
+	renderer.render(m_ball);
 }
 

@@ -2,9 +2,10 @@
 
 #include "State.hpp"
 
+#include "Ball.hpp"
+#include "Block.hpp"
 #include "Pad.hpp"
 #include "PadController.hpp"
-#include "Block.hpp"
 
 #include "om/util/log/Logger.hpp"
 
@@ -25,6 +26,7 @@ namespace falksalt
 	private:
 		om::Logger& m_logger;
 
+		Ball m_ball;
 		Pad m_pad;
 		PadController m_padController;
 		std::array<std::array<Block, Block::LayerWidth>, Block::Layers> m_blocks;

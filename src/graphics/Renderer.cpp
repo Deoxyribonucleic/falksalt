@@ -1,7 +1,8 @@
 #include "Renderer.hpp"
 
-#include "game/Pad.hpp"
+#include "game/Ball.hpp"
 #include "game/Block.hpp"
+#include "game/Pad.hpp"
 
 #include <cassert>
 
@@ -45,13 +46,28 @@ void Renderer::render(Pad const& pad)
 void Renderer::render(Block const& block)
 {
 	sf::RectangleShape rect(sf::Vector2f(
-				unitsToPixelsX(Block::Width), unitsToPixelsY(Block::Height)));
+				unitsToPixelsX(Block::Width),
+				unitsToPixelsY(Block::Height)));
 
 	rect.setFillColor(getBlockColor(block.getLayer()));
 
 	rect.setPosition(sf::Vector2f(
 				worldToScreenX(block.getX()),
 				worldToScreenY(block.getY())));
+	m_window.draw(rect);
+}
+
+void Renderer::render(Ball const& ball)
+{
+	sf::RectangleShape rect(sf::Vector2f(
+				unitsToPixelsX(Ball::Diameter),
+				unitsToPixelsY(Ball::Diameter)));
+
+	rect.setPosition(worldToScreen(ball.getPosition())
+			- sf::Vector2f(
+				unitsToPixelsX(Ball::Diameter) / 2.f,
+				unitsToPixelsY(Ball::Diameter) / 2.f));
+
 	m_window.draw(rect);
 }
 
@@ -65,7 +81,7 @@ float Renderer::worldToScreenY(float y) const
 	return m_window.getSize().y/2 + unitsToPixelsY(y);
 }
 
-sf::Vector2f Renderer::worldToScreen(sf::Vector2f const& vec) const
+sf::Vector2f Renderer::worldToScreen(glm::vec2 const& vec) const
 {
 	return sf::Vector2f(
 			worldToScreenX(vec.x),

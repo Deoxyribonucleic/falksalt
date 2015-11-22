@@ -5,11 +5,14 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <glm/glm.hpp>
+
 
 namespace falksalt
 {
-	class Pad;
+	class Ball;
 	class Block;
+	class Pad;
 	class Renderer final : Uncopiable
 	{
 	public:
@@ -23,6 +26,7 @@ namespace falksalt
 
 		void render(Pad const& pad);
 		void render(Block const& block);
+		void render(Ball const& ball);
 
 	private:
 		sf::RenderWindow m_window;
@@ -32,7 +36,7 @@ namespace falksalt
 
 		float worldToScreenX(float x) const;
 		float worldToScreenY(float y) const;
-		sf::Vector2f worldToScreen(sf::Vector2f const& vec) const;
+		sf::Vector2f worldToScreen(glm::vec2 const& vec) const;
 
 		sf::Color getBlockColor(int layer) const;
 	};
