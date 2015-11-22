@@ -13,7 +13,7 @@ namespace falksalt
 		static const constexpr float Diameter = Block::Height / 2.f;
 		static const constexpr float InitialVelocityX = 0.0f;
 		static const constexpr float InitialVelocityY = 1.0f;
-		static const constexpr float BaseSpeed = 1.0f; // One unit a second
+		static const constexpr float BaseSpeed = 0.75f; // One unit a second
 
 		Ball(float x, float y);
 
