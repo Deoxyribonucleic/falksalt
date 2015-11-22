@@ -13,6 +13,7 @@ namespace falksalt
 		static const constexpr float VerticalPosition = 3/4.f - Block::Height; 
 		static const constexpr float Width = Block::Width * 2.f; 
 		static const constexpr float Height = Block::Height / 2.f;
+		static const constexpr float Speed = 2.0f;
 		
 		float getPosition() const;
 		void setVelocity(float vel);

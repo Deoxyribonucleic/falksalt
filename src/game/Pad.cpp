@@ -19,7 +19,7 @@ void Pad::setVelocity(float vel)
 
 void Pad::update(float delta)
 {
-	m_position += m_velocity * delta;
+	m_position += m_velocity * Speed * delta;
 	
 	if(m_position > 1.0)
 		m_position = 1.0;
