@@ -9,6 +9,7 @@
 namespace falksalt
 {
 	class Pad;
+	class Block;
 	class Renderer final : Uncopiable
 	{
 	public:
@@ -21,6 +22,7 @@ namespace falksalt
 		void finishRender();
 
 		void render(Pad const& pad);
+		void render(Block const& block);
 
 	private:
 		sf::RenderWindow m_window;
@@ -31,6 +33,8 @@ namespace falksalt
 		float worldToScreenX(float x) const;
 		float worldToScreenY(float y) const;
 		sf::Vector2f worldToScreen(sf::Vector2f const& vec) const;
+
+		sf::Color getBlockColor(int layer) const;
 	};
 }
 

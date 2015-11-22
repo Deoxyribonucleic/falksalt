@@ -1,6 +1,9 @@
 #include "Renderer.hpp"
 
 #include "game/Pad.hpp"
+#include "game/Block.hpp"
+
+#include <cassert>
 
 using namespace falksalt;
 
@@ -39,6 +42,19 @@ void Renderer::render(Pad const& pad)
 	m_window.draw(rect);
 }
 
+void Renderer::render(Block const& block)
+{
+	sf::RectangleShape rect(sf::Vector2f(
+				unitsToPixelsX(Block::Width), unitsToPixelsY(Block::Height)));
+
+	rect.setFillColor(getBlockColor(block.getLayer()));
+
+	rect.setPosition(sf::Vector2f(
+				worldToScreenX(block.getX()),
+				worldToScreenY(block.getY())));
+	m_window.draw(rect);
+}
+
 float Renderer::worldToScreenX(float x) const
 {
 	return m_window.getSize().x/2 + unitsToPixelsX(x);
@@ -64,5 +80,21 @@ float Renderer::unitsToPixelsX(float x) const
 float Renderer::unitsToPixelsY(float y) const
 {
 	return y * (m_window.getSize().y/2.f * (1.f / 0.75f));
+}
+
+sf::Color Renderer::getBlockColor(int layer) const
+{
+	assert(layer < 8);
+	static sf::Color rainbow[] = {
+		sf::Color(255, 0, 0, 255), // Red
+		sf::Color(255, 128, 0, 255), // Orange
+		sf::Color(255, 255, 0, 255), // Yellow
+		sf::Color(0, 255, 0, 255), // Green
+		sf::Color(0, 255, 255, 255), // Teal
+		sf::Color(0, 0, 255, 255), // Blue
+		sf::Color(128, 0, 255, 255), // Purple
+		sf::Color(255, 0, 255, 255) // Magenta
+	};
+	return rainbow[layer];
 }
 

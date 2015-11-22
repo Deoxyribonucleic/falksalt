@@ -9,13 +9,18 @@ using namespace falksalt;
 GameState::GameState()
 	: m_logger(om::Logger::get("GameState"))
 {
+	for(int l = 0; l < Block::Layers; ++l)
+	{
+		for(int b = 0; b < Block::LayerWidth; ++b)
+		{
+			m_blocks[l][b] = Block(l, b * Block::Width - 1.0f);
+		}
+	}
 }
 
 void GameState::update(float delta, bool)
 {
 	m_padController.update();
-
-	m_logger.debug() << delta << ", " << m_padController.getInputVelocity() << std::endl;
 
 	m_pad.setVelocity(m_padController.getInputVelocity());
 	m_pad.update(delta);
@@ -24,5 +29,12 @@ void GameState::update(float delta, bool)
 void GameState::render(Renderer& renderer)
 {
 	renderer.render(m_pad);
+	for(int l = 0; l < Block::Layers; ++l)
+	{
+		for(int b = 0; b < Block::LayerWidth; ++b)
+		{
+			renderer.render(m_blocks[l][b]);
+		}
+	}
 }
 

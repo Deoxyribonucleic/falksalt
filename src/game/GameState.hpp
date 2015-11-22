@@ -4,8 +4,11 @@
 
 #include "Pad.hpp"
 #include "PadController.hpp"
+#include "Block.hpp"
 
 #include "om/util/log/Logger.hpp"
+
+#include <array>
 
 
 namespace falksalt
@@ -24,6 +27,7 @@ namespace falksalt
 
 		Pad m_pad;
 		PadController m_padController;
+		std::array<std::array<Block, Block::LayerWidth>, Block::Layers> m_blocks;
 	};
 }
 

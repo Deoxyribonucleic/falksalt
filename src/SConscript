@@ -11,11 +11,12 @@ env.Replace(**os.environ)
 # Source section
 sources = Split("""
 Main.cpp
+game/Block.cpp
 game/Game.cpp
 game/GameState.cpp
-game/StateStack.cpp
 game/Pad.cpp
 game/PadController.cpp
+game/StateStack.cpp
 graphics/Renderer.cpp
 """)
 
