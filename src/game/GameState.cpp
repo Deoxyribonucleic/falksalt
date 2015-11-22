@@ -1,5 +1,9 @@
 #include "GameState.hpp"
 
+#include "graphics/Renderer.hpp"
+
+#include <SFML/Graphics.hpp>
+
 using namespace falksalt;
 
 GameState::GameState()
@@ -7,8 +11,18 @@ GameState::GameState()
 {
 }
 
-void GameState::update()
+void GameState::update(float delta, bool)
 {
-	m_logger.info() << "Update" << std::endl;
+	m_padController.update();
+
+	m_logger.debug() << delta << ", " << m_padController.getInputVelocity() << std::endl;
+
+	m_pad.setVelocity(m_padController.getInputVelocity());
+	m_pad.update(delta);
+}
+
+void GameState::render(Renderer& renderer)
+{
+	renderer.render(m_pad);
 }
 

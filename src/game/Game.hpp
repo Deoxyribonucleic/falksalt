@@ -7,6 +7,7 @@
 #include <om/util/log/Logger.hpp>
 
 #include <memory>
+#include <chrono>
 
 
 namespace falksalt
@@ -24,10 +25,14 @@ namespace falksalt
 		om::Logger& m_logger;
 		Renderer m_renderer;
 		StateStack m_stateStack;
+
+		std::chrono::system_clock::time_point m_lastTick;
 		
 		bool m_stop;
 
 		void update();
+
+		float getAndUpdateDelta();
 	};
 }
 

@@ -8,6 +8,7 @@
 
 namespace falksalt
 {
+	class Pad;
 	class Renderer final : Uncopiable
 	{
 	public:
@@ -19,8 +20,14 @@ namespace falksalt
 		void beginRender();
 		void finishRender();
 
+		void render(Pad const& pad);
+
 	private:
 		sf::RenderWindow m_window;
+
+		float worldToScreenX(float x) const;
+		float worldToScreenY(float y) const;
+		sf::Vector2f worldToScreen(sf::Vector2f const& vec) const;
 	};
 }
 
