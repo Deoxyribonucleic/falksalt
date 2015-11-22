@@ -8,7 +8,10 @@ namespace falksalt
 	public:
 		Pad();
 
-		static const constexpr float VerticalPosition = 0.7f; 
+		static const constexpr float VerticalPosition = 3/4.f - 1/16.f; 
+		static const constexpr float Width = 1/4.f; 
+		static const constexpr float Height = 1/32.f;
+
 		
 		float getPosition() const;
 		void setVelocity(float vel);

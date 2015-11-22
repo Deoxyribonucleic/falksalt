@@ -25,6 +25,9 @@ namespace falksalt
 	private:
 		sf::RenderWindow m_window;
 
+		float unitsToPixelsX(float x) const;
+		float unitsToPixelsY(float y) const;
+
 		float worldToScreenX(float x) const;
 		float worldToScreenY(float y) const;
 		sf::Vector2f worldToScreen(sf::Vector2f const& vec) const;

@@ -30,21 +30,23 @@ void Renderer::finishRender()
 
 void Renderer::render(Pad const& pad)
 {
-	sf::RectangleShape rect;
-	rect.setSize(sf::Vector2f(50, 50));
-	rect.setPosition(sf::Vector2f(worldToScreenX(pad.getPosition()) - 25,
+	sf::RectangleShape rect(sf::Vector2f(
+				unitsToPixelsX(Pad::Width), unitsToPixelsY(Pad::Height)));
+
+	rect.setPosition(sf::Vector2f(
+				worldToScreenX(pad.getPosition()) - rect.getSize().x/2.0f,
 				worldToScreenY(Pad::VerticalPosition)));
 	m_window.draw(rect);
 }
 
 float Renderer::worldToScreenX(float x) const
 {
-	return m_window.getSize().x/2 + x*(m_window.getSize().x/2);
+	return m_window.getSize().x/2 + unitsToPixelsX(x);
 }
 
 float Renderer::worldToScreenY(float y) const
 {
-	return m_window.getSize().y/2 + y*(m_window.getSize().y/2.f * (1.f / 0.75f));
+	return m_window.getSize().y/2 + unitsToPixelsY(y);
 }
 
 sf::Vector2f Renderer::worldToScreen(sf::Vector2f const& vec) const
@@ -52,5 +54,15 @@ sf::Vector2f Renderer::worldToScreen(sf::Vector2f const& vec) const
 	return sf::Vector2f(
 			worldToScreenX(vec.x),
 			worldToScreenY(vec.y));
+}
+
+float Renderer::unitsToPixelsX(float x) const
+{
+	return x * (m_window.getSize().x / 2.0f);
+}
+
+float Renderer::unitsToPixelsY(float y) const
+{
+	return y * (m_window.getSize().y/2.f * (1.f / 0.75f));
 }
 

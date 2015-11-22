@@ -3,7 +3,7 @@
 using namespace falksalt;
 
 Pad::Pad()
-	: m_position(0.5f), m_velocity(0.f)
+	: m_position(0.0f), m_velocity(0.f)
 {
 }
 
