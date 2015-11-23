@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include <glm/gtc/constants.hpp>
+
 using namespace falksalt;
 
 Ball::Ball(float x, float y)
@@ -43,10 +45,24 @@ void Ball::move(float delta, Pad const& pad,
 			delta * (glm::length(collision.where - m_position)
 					/ glm::length(movement));
 
-		if(collision.side == Side::Up || collision.side == Side::Down)
-			m_velocity.y *= -1;
+		if(collision.object) // If we've collided with a block, reverse appropriate
+			// direction...
+		{
+			if(collision.side == Side::Up || collision.side == Side::Down)
+				m_velocity.y *= -1;
+			else
+				m_velocity.x *= -1;
+		}
 		else
-			m_velocity.x *= -1;
+		{
+			// TODO: move these calculations to Pad
+			float angle = glm::pi<float>() / 2 +
+					glm::pi<float>() / 3 *
+					((pad.getPosition() - collision.where.x) / (Pad::Width / 2));
+
+			m_velocity.x = glm::cos(angle);
+			m_velocity.y = -glm::sin(angle);
+		}
 
 		m_position = collision.where;
 
