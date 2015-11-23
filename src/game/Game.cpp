@@ -41,15 +41,13 @@ void Game::start()
 			//	m_renderer.resize(event.size.width, event.size.height);
 		}
 		
-		// TODO: Perhaps use double instead of float? Seems a bit flakey
-		// at high frame rates.
-		m_stateStack.update(getAndUpdateDelta());
+		m_stateStack.update(getAndUpdateDelta(), m_soundManager);
 
 		m_renderer.beginRender();
 		m_stateStack.render(m_renderer);
 		m_renderer.finishRender();
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(20));
 	}
 	m_logger << "Game loop stopped." << std::endl;
 }

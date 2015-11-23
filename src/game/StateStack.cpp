@@ -1,5 +1,7 @@
 #include "StateStack.hpp"
 
+#include "audio/SoundManager.hpp"
+
 
 using namespace falksalt;
 
@@ -13,15 +15,15 @@ void StateStack::pop()
 	m_stack.pop();
 }
 
-void StateStack::update(float delta)
+void StateStack::update(float delta, SoundManager& soundMgr)
 {
 	auto stack = m_stack;
-	stack.top()->update(delta, true);
+	stack.top()->update(delta, soundMgr, true);
 	stack.pop();
 
 	while(!stack.empty())
 	{
-		stack.top()->update(delta, false);
+		stack.top()->update(delta, soundMgr, false);
 		stack.pop();
 	}
 }

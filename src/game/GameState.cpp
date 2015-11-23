@@ -1,5 +1,6 @@
 #include "GameState.hpp"
 
+#include "audio/SoundManager.hpp"
 #include "graphics/Renderer.hpp"
 #include "Collision.hpp"
 
@@ -20,14 +21,14 @@ GameState::GameState()
 	}
 }
 
-void GameState::update(float delta, bool)
+void GameState::update(float delta, SoundManager& soundMgr, bool)
 {
 	m_padController.update();
 
 	m_pad.setVelocity(m_padController.getInputVelocity());
 	m_pad.update(delta);
 
-	m_ball.update(delta, m_pad, m_blocks);
+	m_ball.update(delta, m_pad, m_blocks, soundMgr);
 }
 
 void GameState::render(Renderer& renderer)

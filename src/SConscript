@@ -11,6 +11,7 @@ env.Replace(**os.environ)
 # Source section
 sources = Split("""
 Main.cpp
+audio/SoundManager.cpp
 game/Ball.cpp
 game/Block.cpp
 game/Collision.cpp
@@ -31,6 +32,7 @@ binary = env.Program(
         source = objects,
         LIBS = ['sfml-system', 'sfml-window',
             'sfml-graphics',
+            'sfml-audio',
             'om-util'])
 
 all_targets = [binary]

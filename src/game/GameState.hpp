@@ -15,12 +15,13 @@
 namespace falksalt
 {
 	class Renderer;
+	class SoundManager;
 	class GameState final : public State
 	{
 	public:
 		GameState();
 
-		void update(float delta, bool top);
+		void update(float delta, SoundManager& soundMgr, bool top);
 		void render(Renderer& renderer);
 
 	private:

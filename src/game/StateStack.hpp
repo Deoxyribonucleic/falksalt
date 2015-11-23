@@ -8,13 +8,14 @@
 namespace falksalt
 {
 	class Renderer;
+	class SoundManager;
 	class StateStack final
 	{
 	public:
 		void push(std::shared_ptr<State> state);
 		void pop();
 
-		void update(float delta);
+		void update(float delta, SoundManager& soundMgr);
 		void render(Renderer& renderer);
 
 	private:

@@ -3,6 +3,7 @@
 #include "Uncopiable.hpp"
 #include "StateStack.hpp"
 #include "graphics/Renderer.hpp"
+#include "audio/SoundManager.hpp"
 
 #include <om/util/log/Logger.hpp>
 
@@ -25,6 +26,7 @@ namespace falksalt
 		om::Logger& m_logger;
 		Renderer m_renderer;
 		StateStack m_stateStack;
+		SoundManager m_soundManager;
 
 		std::chrono::system_clock::time_point m_lastTick;
 		

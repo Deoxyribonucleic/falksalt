@@ -2,6 +2,7 @@
 
 #include "Board.hpp"
 #include "Pad.hpp"
+#include "audio/SoundManager.hpp"
 
 #include <iostream>
 
@@ -16,11 +17,12 @@ Ball::Ball(float x, float y)
 
 void Ball::update(float delta, Pad const& pad,
 		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-		blocks)
+			blocks,
+		SoundManager& soundMgr)
 {
 	m_velocity = glm::normalize(m_velocity) * getSpeed();
 
-	move(delta, pad, blocks);
+	move(delta, pad, blocks, soundMgr);
 	++frame;
 
 	// Bounce against walls
@@ -31,14 +33,16 @@ void Ball::update(float delta, Pad const& pad,
 }
 
 void Ball::move(float delta, Pad const& pad,
-		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>& blocks)
+		std::array<std::array<Block, Block::LayerWidth>,
+		Block::Layers>& blocks,
+		SoundManager& soundMgr)
 {
 	//if(delta < 0.02f)
 	//	std::cout << delta << std::endl;
 	glm::vec2 movement = m_velocity * delta;
 	
 	Collision collision;
-	if((collision = collide(movement, pad, blocks)).collision)
+	if((collision = collide(movement, pad, blocks, soundMgr)).collision)
 	{
 		std::cout << "collision" << frame << std::endl;
 		float remainingDelta = delta -
@@ -66,7 +70,7 @@ void Ball::move(float delta, Pad const& pad,
 
 		m_position = collision.where;
 
-		move(remainingDelta, pad, blocks);
+		move(remainingDelta, pad, blocks, soundMgr);
 	}
 	else
 	{
@@ -74,10 +78,26 @@ void Ball::move(float delta, Pad const& pad,
 	}
 }
 
+bool layerIsCleared(
+		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
+			blocks,
+		int layer)
+{
+	assert(layer > -1 && (unsigned int)layer < blocks.size());
+	
+	for(size_t i=0; i<blocks[layer].size(); ++i)
+	{
+		if(!blocks[layer][i].isDestroyed())
+			return false;
+	}
+	return true;
+}
+
 Collision Ball::collide(glm::vec2 const& movement,
 		Pad const& pad,
 		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-			blocks)
+			blocks,
+		SoundManager& soundMgr)
 {
 	std::vector<Collision> collisions;
 	
@@ -95,6 +115,11 @@ Collision Ball::collide(glm::vec2 const& movement,
 	if(collision.collision && collision.object) // If we've collided with a brick
 	{
 		((Block*)collision.object)->destroy();
+		
+		if(layerIsCleared(blocks, ((Block*)collision.object)->getLayer()))
+			soundMgr.playSpecialChime();
+		else
+			soundMgr.playChime();
 	}
 
 	return collision;

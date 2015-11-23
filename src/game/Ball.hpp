@@ -7,6 +7,7 @@
 namespace falksalt
 {
 	class Pad;
+	class SoundManager;
 	class Ball final
 	{
 	public:
@@ -19,7 +20,8 @@ namespace falksalt
 
 		void update(float delta, Pad const& pad,
 				std::array<std::array<Block, Block::LayerWidth>,
-					Block::Layers>& blocks);
+					Block::Layers>& blocks,
+					SoundManager& soundMgr);
 
 		glm::vec2 getPosition() const;
 
@@ -27,11 +29,15 @@ namespace falksalt
 		float getSpeed() const;
 
 		void move(float delta, Pad const& pad,
-			std::array<std::array<Block, Block::LayerWidth>, Block::Layers>& blocks);
+			std::array<std::array<Block, Block::LayerWidth>,
+			Block::Layers>& blocks,
+			SoundManager& soundMgr);
+
 		Collision collide(glm::vec2 const& movement,
 				Pad const& pad,
 				std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-					blocks);
+					blocks,
+				SoundManager& soundMgr);
 
 		glm::vec2 m_position, m_velocity;
 		int frame;
