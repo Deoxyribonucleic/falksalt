@@ -5,9 +5,16 @@
 
 namespace falksalt
 {
+	class Block;
+
 	enum class Side
 	{
 		Up, Right, Down, Left
+	};
+
+	enum class CollisionObject
+	{
+		Pad, Block, Edge
 	};
 	
 	struct Collision
@@ -15,7 +22,9 @@ namespace falksalt
 		bool collision;
 		Side side;
 		glm::vec2 where;
-		void* object;
+
+		CollisionObject object;
+		Block const* block;
 	};
 
 	extern const Collision NoCollision;

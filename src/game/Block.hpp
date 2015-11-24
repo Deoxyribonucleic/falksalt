@@ -10,7 +10,7 @@ namespace falksalt
 	{
 	public:
 		Block();
-		Block(int layer, float x);
+		Block(int layer, int index);
 
 		static const int Layers = 8;
 		static const int LayerWidth = 16;
@@ -21,18 +21,19 @@ namespace falksalt
 		float getY() const;
 		float getX() const;
 		int getLayer() const;
+		int getIndex() const;
 		
 		bool isDestroyed() const;
 		int destroy();
 		int getScore() const;
 		
-		Collision collides(glm::vec2 start, glm::vec2 end);
+		Collision collides(glm::vec2 start, glm::vec2 end) const;
 		
 	private:
 		float layerToY(int layer) const;
 	
 		int m_layer;
-		float m_x;
+		int m_index;
 		bool m_isDestroyed;
 	};
 }

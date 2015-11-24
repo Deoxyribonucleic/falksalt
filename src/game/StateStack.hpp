@@ -15,7 +15,7 @@ namespace falksalt
 		void push(std::shared_ptr<State> state);
 		void pop();
 
-		void update(float delta, SoundManager& soundMgr);
+		void update(float delta);
 		void render(Renderer& renderer);
 
 	private:

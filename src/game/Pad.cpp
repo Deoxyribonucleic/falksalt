@@ -36,7 +36,7 @@ Collision Pad::collides(glm::vec2 start, glm::vec2 end) const
 					m_position + Pad::Width / 2.f, 0+Pad::VerticalPosition)
 				);
 	collision.side = Side::Up;
-	collision.object = nullptr;
+	collision.object = CollisionObject::Pad;
 	return collision;
 }
 

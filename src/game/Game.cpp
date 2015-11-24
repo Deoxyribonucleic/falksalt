@@ -16,7 +16,7 @@ Game::Game(int*, char**)
 {
 	m_logger << "Initialized." << std::endl;
 
-	m_stateStack.push(std::make_shared<GameState>());
+	m_stateStack.push(std::make_shared<GameState>(*this));
 }
 
 Game::~Game()
@@ -41,7 +41,7 @@ void Game::start()
 			//	m_renderer.resize(event.size.width, event.size.height);
 		}
 		
-		m_stateStack.update(getAndUpdateDelta(), m_soundManager);
+		m_stateStack.update(getAndUpdateDelta());
 
 		m_renderer.beginRender();
 		m_stateStack.render(m_renderer);
@@ -70,5 +70,10 @@ float Game::getAndUpdateDelta()
 
 	m_lastTick = now;
 	return delta.count() / 1000000.f;
+}
+
+SoundManager& Game::getSoundManager()
+{
+	return m_soundManager;
 }
 

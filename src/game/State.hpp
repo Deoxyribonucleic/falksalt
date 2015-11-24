@@ -11,7 +11,7 @@ namespace falksalt
 	public:
 		virtual ~State() {};
 
-		virtual void update(float delta, SoundManager& soundMgr, bool top) = 0;
+		virtual void update(float delta, bool top) = 0;
 		virtual void render(Renderer& renderer) = 0;
 	};
 }

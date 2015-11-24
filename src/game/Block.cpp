@@ -2,19 +2,19 @@
 
 using namespace falksalt;
 
-Block::Block(int layer, float x)
-	: m_layer(layer), m_x(x), m_isDestroyed(false)
+Block::Block(int layer, int index)
+	: m_layer(layer), m_index(index), m_isDestroyed(false)
 {
 }
 
 Block::Block()
-	: m_layer(0), m_x(0), m_isDestroyed(true)
+	: m_layer(0), m_index(0), m_isDestroyed(true)
 {
 }
 
 float Block::getX() const
 {
-	return m_x;
+	return m_index * Block::Width - 1.0f;
 }
 
 float Block::getY() const
@@ -27,14 +27,20 @@ int Block::getLayer() const
 	return m_layer;
 }
 
-Collision Block::collides(glm::vec2 start, glm::vec2 end)
+int Block::getIndex() const
+{
+	return m_index;
+}
+
+Collision Block::collides(glm::vec2 start, glm::vec2 end) const
 {
 	if(isDestroyed())
 		return NoCollision;
 
 	glm::vec4 rect(getX(), getY(), Block::Width, Block::Height);
 	auto collision = falksalt::collides(rect, start, end);
-	collision.object = this;
+	collision.object = CollisionObject::Block;
+	collision.block = this;
 	return collision;
 }
 

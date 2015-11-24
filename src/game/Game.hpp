@@ -21,6 +21,8 @@ namespace falksalt
 
 		void start();
 		void stop();
+		
+		SoundManager& getSoundManager();
 
 	private:
 		om::Logger& m_logger;

@@ -15,15 +15,15 @@ void StateStack::pop()
 	m_stack.pop();
 }
 
-void StateStack::update(float delta, SoundManager& soundMgr)
+void StateStack::update(float delta)
 {
 	auto stack = m_stack;
-	stack.top()->update(delta, soundMgr, true);
+	stack.top()->update(delta, true);
 	stack.pop();
 
 	while(!stack.empty())
 	{
-		stack.top()->update(delta, soundMgr, false);
+		stack.top()->update(delta, false);
 		stack.pop();
 	}
 }

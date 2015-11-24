@@ -17,7 +17,13 @@ bool falksalt::isOnLineSegment(glm::vec2 start, glm::vec2 end, glm::vec2 point)
 		glm::length(start - end) < 0.000000001f && start != point; // && end != point;
 }
 
-const Collision falksalt::NoCollision = {false, Side::Up, {}, nullptr};
+const Collision falksalt::NoCollision = {
+	false,
+	Side::Up,
+	{},
+	CollisionObject::Block,
+	nullptr
+};
 
 Collision falksalt::intersects(glm::vec2 start1, glm::vec2 end1,
 	glm::vec2 start2, glm::vec2 end2)

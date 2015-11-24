@@ -2,6 +2,7 @@
 
 #include "Board.hpp"
 #include "Pad.hpp"
+#include "GameState.hpp"
 #include "audio/SoundManager.hpp"
 
 #include <iostream>
@@ -10,19 +11,16 @@
 
 using namespace falksalt;
 
-Ball::Ball(float x, float y)
-	: m_position(x, y), m_velocity(1.0f, 1.0f), frame(0)
+Ball::Ball(GameState& game, float x, float y)
+	: m_game(game), m_position(x, y), m_velocity(1.0f, 1.0f), frame(0)
 {
 }
 
-void Ball::update(float delta, Pad const& pad,
-		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-			blocks,
-		SoundManager& soundMgr)
+void Ball::update(float delta, Pad const& pad)
 {
 	m_velocity = glm::normalize(m_velocity) * getSpeed();
 
-	move(delta, pad, blocks, soundMgr);
+	move(delta, pad);
 	++frame;
 
 	// Bounce against walls
@@ -32,26 +30,24 @@ void Ball::update(float delta, Pad const& pad,
 		m_velocity.y *= -1;
 }
 
-void Ball::move(float delta, Pad const& pad,
-		std::array<std::array<Block, Block::LayerWidth>,
-		Block::Layers>& blocks,
-		SoundManager& soundMgr)
+void Ball::move(float delta, Pad const& pad)
 {
 	//if(delta < 0.02f)
 	//	std::cout << delta << std::endl;
 	glm::vec2 movement = m_velocity * delta;
 	
 	Collision collision;
-	if((collision = collide(movement, pad, blocks, soundMgr)).collision)
+	if((collision = collide(movement, pad)).collision)
 	{
-		std::cout << "collision" << frame << std::endl;
+		//std::cout << "collision" << frame << std::endl;
 		float remainingDelta = delta -
 			delta * (glm::length(collision.where - m_position)
 					/ glm::length(movement));
 
-		if(collision.object) // If we've collided with a block, reverse appropriate
-			// direction...
+		if(collision.object == CollisionObject::Block)
 		{
+			// If we've collided with a block, reverse appropriate
+			// direction...
 			if(collision.side == Side::Up || collision.side == Side::Down)
 				m_velocity.y *= -1;
 			else
@@ -70,7 +66,7 @@ void Ball::move(float delta, Pad const& pad,
 
 		m_position = collision.where;
 
-		move(remainingDelta, pad, blocks, soundMgr);
+		move(remainingDelta, pad);
 	}
 	else
 	{
@@ -78,28 +74,12 @@ void Ball::move(float delta, Pad const& pad,
 	}
 }
 
-bool layerIsCleared(
-		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-			blocks,
-		int layer)
-{
-	assert(layer > -1 && (unsigned int)layer < blocks.size());
-	
-	for(size_t i=0; i<blocks[layer].size(); ++i)
-	{
-		if(!blocks[layer][i].isDestroyed())
-			return false;
-	}
-	return true;
-}
-
 Collision Ball::collide(glm::vec2 const& movement,
-		Pad const& pad,
-		std::array<std::array<Block, Block::LayerWidth>, Block::Layers>&
-			blocks,
-		SoundManager& soundMgr)
+		Pad const& pad)
 {
 	std::vector<Collision> collisions;
+
+	GameState::BlockList const& blocks = m_game.getBlocks();
 	
 	collisions.push_back(pad.collides(m_position, m_position + movement));
 	for(size_t l = 0; l<blocks.size(); ++l)
@@ -112,14 +92,10 @@ Collision Ball::collide(glm::vec2 const& movement,
 	}
 
 	auto collision = closest(m_position, collisions);
-	if(collision.collision && collision.object) // If we've collided with a brick
+	if(collision.collision && collision.object == CollisionObject::Block)
 	{
-		((Block*)collision.object)->destroy();
-		
-		if(layerIsCleared(blocks, ((Block*)collision.object)->getLayer()))
-			soundMgr.playSpecialChime();
-		else
-			soundMgr.playChime();
+		// If we've collided with a block, destroy it
+		m_game.destroyBlock(*collision.block);
 	}
 
 	return collision;
@@ -132,6 +108,6 @@ glm::vec2 Ball::getPosition() const
 
 float Ball::getSpeed() const
 {
-	return BaseSpeed;
+	return BaseSpeed * (1.0f + 0.1f/16.f * m_game.getScore());
 }
 
