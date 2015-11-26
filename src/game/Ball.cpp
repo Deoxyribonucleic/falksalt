@@ -22,12 +22,6 @@ void Ball::update(float delta, Pad const& pad)
 
 	move(delta, pad);
 	++frame;
-
-	// Bounce against walls
-	if(m_position.x < -1 || m_position.x > 1)
-		m_velocity.x *= -1;
-	if(m_position.y < -Board::Height || m_position.y > Board::Height)
-		m_velocity.y *= -1;
 }
 
 void Ball::move(float delta, Pad const& pad)
@@ -44,17 +38,10 @@ void Ball::move(float delta, Pad const& pad)
 			delta * (glm::length(collision.where - m_position)
 					/ glm::length(movement));
 
-		if(collision.object == CollisionObject::Block)
+		if(collision.object == CollisionObject::Pad)
 		{
-			// If we've collided with a block, reverse appropriate
-			// direction...
-			if(collision.side == Side::Up || collision.side == Side::Down)
-				m_velocity.y *= -1;
-			else
-				m_velocity.x *= -1;
-		}
-		else
-		{
+			// If we've collided the pad, do some special bouncing logic
+			//
 			// TODO: move these calculations to Pad
 			float angle = glm::pi<float>() / 2 +
 					glm::pi<float>() / 3 *
@@ -62,6 +49,14 @@ void Ball::move(float delta, Pad const& pad)
 
 			m_velocity.x = glm::cos(angle);
 			m_velocity.y = -glm::sin(angle);
+		}
+		else
+		{
+	 		// Otherwise, reverse appropriate direction...
+			if(collision.side == Side::Up || collision.side == Side::Down)
+				m_velocity.y *= -1;
+			else
+				m_velocity.x *= -1;
 		}
 
 		m_position = collision.where;
@@ -74,6 +69,41 @@ void Ball::move(float delta, Pad const& pad)
 	}
 }
 
+Collision edgeCollision(glm::vec2 start, glm::vec2 end)
+{
+	std::vector<Collision> collisions;
+
+	// Top
+	Collision collision = intersects(start, end,
+			glm::vec2(-1, -0.75), glm::vec2(1, -0.75));
+	collision.side = Side::Down;
+	collision.object = CollisionObject::Edge;
+	collisions.push_back(collision);
+
+	// Left
+	collision = intersects(start, end,
+			glm::vec2(-1, -1), glm::vec2(-1, 1));
+	collision.side = Side::Right;
+	collision.object = CollisionObject::Edge;
+	collisions.push_back(collision);
+
+	// Right
+	collision = intersects(start, end,
+			glm::vec2(1, -1), glm::vec2(1, 1));
+	collision.side = Side::Left;
+	collision.object = CollisionObject::Edge;
+	collisions.push_back(collision);
+
+	// Down
+	collision = intersects(start, end,
+			glm::vec2(-1, 0.75), glm::vec2(1, 0.75));
+	collision.side = Side::Up;
+	collision.object = CollisionObject::Edge;
+	collisions.push_back(collision);
+
+	return closest(start, collisions);
+}
+
 Collision Ball::collide(glm::vec2 const& movement,
 		Pad const& pad)
 {
@@ -81,7 +111,13 @@ Collision Ball::collide(glm::vec2 const& movement,
 
 	GameState::BlockList const& blocks = m_game.getBlocks();
 	
+	// Pad collision
 	collisions.push_back(pad.collides(m_position, m_position + movement));
+
+	// Screen edge collision
+	collisions.push_back(edgeCollision(m_position, m_position + movement));
+
+	// Block collisions
 	for(size_t l = 0; l<blocks.size(); ++l)
 	{
 		for(size_t b = 0; b<blocks[l].size(); ++b)

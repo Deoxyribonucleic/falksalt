@@ -14,7 +14,7 @@ bool falksalt::isOnLineSegment(glm::vec2 start, glm::vec2 end, glm::vec2 point)
 	// ALSO IMPORTANT: If things seem fleety, adjust the runes below.
 	// Greetings from Epsilon.
 	return (glm::length(point - start) + glm::length(end - point)) - 
-		glm::length(start - end) < 0.000000001f && start != point; // && end != point;
+		glm::length(start - end) < 0.000000001 && start != point; // && end != point;
 }
 
 const Collision falksalt::NoCollision = {

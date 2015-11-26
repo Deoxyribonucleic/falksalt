@@ -9,8 +9,35 @@
 using namespace falksalt;
 
 Renderer::Renderer()
-	: m_window(sf::VideoMode(1280, 960), "Project Falksalt", sf::Style::Default)
+	: m_window(sf::VideoMode(1280, 960), "Project Falksalt",
+			sf::Style::Default),
+	  m_blockTextures(Block::Layers), m_blockSprites(Block::Layers)
 {
+	m_blockTextures[0].loadFromFile("assets/art/Block_Red.png");
+	m_blockTextures[1].loadFromFile("assets/art/Block_Orange.png");
+	m_blockTextures[2].loadFromFile("assets/art/Block_Yellow.png");
+	m_blockTextures[3].loadFromFile("assets/art/Block_Green.png");
+	m_blockTextures[4].loadFromFile("assets/art/Block_Cyan.png");
+	m_blockTextures[5].loadFromFile("assets/art/Block_Blue.png");
+	m_blockTextures[6].loadFromFile("assets/art/Block_Purple.png");
+	m_blockTextures[7].loadFromFile("assets/art/Block_Pink.png");
+	
+	for(size_t i = 0; i<m_blockTextures.size(); ++i)
+	{
+		m_blockTextures[i].setSmooth(true);
+
+		float scale = unitsToPixelsX(Block::Width) /
+			m_blockTextures[i].getSize().x;
+		m_blockSprites[i].setTexture(m_blockTextures[i]);
+		m_blockSprites[i].setScale(scale, scale);
+	}
+
+	m_ballTexture.loadFromFile("assets/art/Ball.png");
+	m_ballSprite.setTexture(m_ballTexture);
+
+	float scale = unitsToPixelsX(Ball::Diameter) /
+		m_ballTexture.getSize().x;
+	m_ballSprite.setScale(scale, scale);
 }
 
 Renderer::~Renderer()
@@ -48,30 +75,22 @@ void Renderer::render(Block const& block)
 	if(block.isDestroyed())
 		return;
 
-	sf::RectangleShape rect(sf::Vector2f(
-				unitsToPixelsX(Block::Width),
-				unitsToPixelsY(Block::Height)));
+	auto& sprite = getBlockSprite(block.getLayer());
+	sprite.setPosition(
+			worldToScreenX(block.getX()),
+			worldToScreenY(block.getY()));
 
-	rect.setFillColor(getBlockColor(block.getLayer()));
-
-	rect.setPosition(sf::Vector2f(
-				worldToScreenX(block.getX()),
-				worldToScreenY(block.getY())));
-	m_window.draw(rect);
+	m_window.draw(sprite);
 }
 
 void Renderer::render(Ball const& ball)
 {
-	sf::RectangleShape rect(sf::Vector2f(
-				unitsToPixelsX(Ball::Diameter),
-				unitsToPixelsY(Ball::Diameter)));
-
-	rect.setPosition(worldToScreen(ball.getPosition())
+	m_ballSprite.setPosition(worldToScreen(ball.getPosition())
 			- sf::Vector2f(
 				unitsToPixelsX(Ball::Diameter) / 2.f,
 				unitsToPixelsY(Ball::Diameter) / 2.f));
 
-	m_window.draw(rect);
+	m_window.draw(m_ballSprite);
 }
 
 float Renderer::worldToScreenX(float x) const
@@ -115,5 +134,10 @@ sf::Color Renderer::getBlockColor(int layer) const
 		sf::Color(255, 0, 255, 255) // Magenta
 	};
 	return rainbow[layer];
+}
+
+sf::Sprite& Renderer::getBlockSprite(int layer)
+{
+	return m_blockSprites[layer];
 }
 

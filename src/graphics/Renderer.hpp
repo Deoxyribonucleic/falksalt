@@ -30,6 +30,10 @@ namespace falksalt
 
 	private:
 		sf::RenderWindow m_window;
+		std::vector<sf::Texture> m_blockTextures;
+		std::vector<sf::Sprite> m_blockSprites;
+		sf::Texture m_ballTexture;
+		sf::Sprite m_ballSprite;
 
 		float unitsToPixelsX(float x) const;
 		float unitsToPixelsY(float y) const;
@@ -39,6 +43,7 @@ namespace falksalt
 		sf::Vector2f worldToScreen(glm::vec2 const& vec) const;
 
 		sf::Color getBlockColor(int layer) const;
+		sf::Sprite& getBlockSprite(int layer);
 	};
 }
 
