@@ -13,8 +13,15 @@ bool falksalt::isOnLineSegment(glm::vec2 start, glm::vec2 end, glm::vec2 point)
 	// I think this might be more practical for collisions...
 	// ALSO IMPORTANT: If things seem fleety, adjust the runes below.
 	// Greetings from Epsilon.
+	// 
+	// Update: 0.000000001 (one more zero) yields more accurate collision
+	// detection, but we overdetect slightly here and compensate for it
+	// in the Ball class by not moving the ball all the way to the collision
+	// point, but only slightly before it. This way we don't get multiple
+	// detection on the same line segment in the same tick.
+	//
 	return (glm::length(point - start) + glm::length(end - point)) - 
-		glm::length(start - end) < 0.000000001 && start != point; // && end != point;
+		glm::length(start - end) < 0.00000001 && start != point; // && end != point;
 }
 
 const Collision falksalt::NoCollision = {

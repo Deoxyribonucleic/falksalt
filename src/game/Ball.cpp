@@ -59,7 +59,9 @@ void Ball::move(float delta, Pad const& pad)
 				m_velocity.x *= -1;
 		}
 
-		m_position = collision.where;
+		// Compensate for slight 'over-detection' of collisions
+		// (see isOnLineSegment, Collision.cpp)
+		m_position = m_position + (collision.where - m_position) * 0.99f;
 
 		move(remainingDelta, pad);
 	}
